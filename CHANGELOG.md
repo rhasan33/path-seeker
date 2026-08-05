@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `find_first_value(key)` — the first value found under `key`, in traversal order; raises `UnknownKeyProvided` if absent.
+- `find_last_value(key)` — the last value found under `key`, in traversal order; raises `UnknownKeyProvided` if absent.
+
 ## [0.1.0] - Unreleased
 
 ### Added

@@ -9,6 +9,12 @@ class Match(NamedTuple):
     value: Any
 
 
+class UnknownKeyProvided(KeyError):  # noqa: N818
+    def __init__(self, key: str) -> None:
+        super().__init__(f"key {key!r} was not found in the structure")
+        self.key = key
+
+
 class _Entry(NamedTuple):
     """One dict key/value pair found during traversal, with enough context to
     both report it (path, value) and mutate it in place (parent, key)."""
@@ -54,6 +60,23 @@ class PathSeeker:
 
     def find_paths(self, key: str) -> list[Match]:
         return [Match(entry.path, entry.value) for entry in self._entries() if entry.key == key]
+
+    def find_first_value(self, key: str) -> Any:
+        for entry in self._entries():
+            if entry.key == key:
+                return entry.value
+        raise UnknownKeyProvided(key)
+
+    def find_last_value(self, key: str) -> Any:
+        found = False
+        value: Any = None
+        for entry in self._entries():
+            if entry.key == key:
+                found = True
+                value = entry.value
+        if not found:
+            raise UnknownKeyProvided(key)
+        return value
 
     def get_keys(self) -> list[str]:
         return sorted({entry.key for entry in self._entries()})

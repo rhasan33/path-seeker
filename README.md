@@ -42,6 +42,12 @@ seeker.find_paths("id")
 #  Match(path=['orders', 0, 'id'], value=100),
 #  Match(path=['orders', 1, 'id'], value=101)]
 
+# The first/last value found under a key, in traversal order
+seeker.find_first_value("id")
+# 1
+seeker.find_last_value("id")
+# 101
+
 # Every distinct key name in the structure
 seeker.get_keys()
 # ['address', 'city', 'id', 'orders', 'status', 'user']
@@ -64,6 +70,8 @@ seeker.update_values("id", 0)
 | --- | --- | --- |
 | `find_values(key)` | `list[Any]` | Every value stored under `key`, at any depth. |
 | `find_paths(key)` | `list[Match]` | Every `(path, value)` pair for `key`, at any depth. |
+| `find_first_value(key)` | `Any` | The first value found under `key`, in traversal order. Raises `UnknownKeyProvided` if `key` doesn't occur anywhere. |
+| `find_last_value(key)` | `Any` | The last value found under `key`, in traversal order. Raises `UnknownKeyProvided` if `key` doesn't occur anywhere. |
 | `get_keys()` | `list[str]` | Every distinct key name in the structure, sorted. |
 | `count_key(key)` | `int` | How many times `key` occurs. |
 | `set_value(path, new_value)` | `None` | Update the value at an exact path (from `find_paths`). |
