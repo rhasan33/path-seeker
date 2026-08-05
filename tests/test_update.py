@@ -69,6 +69,22 @@ class TestSetValue:
         with pytest.raises(ValueError, match="cannot index into"):
             PathSeeker({"point": (1, 2)}).set_value(["point", 0, "x"], 9)
 
+    def test_missing_intermediate_dict_key_raises_key_error(self) -> None:
+        with pytest.raises(KeyError):
+            PathSeeker({"a": {"b": 1}}).set_value(["missing", "c"], 2)
+
+    def test_intermediate_int_index_into_dict_raises_value_error(self) -> None:
+        with pytest.raises(ValueError, match="string key"):
+            PathSeeker({"a": {"b": 1}}).set_value([0, "c"], 2)
+
+    def test_intermediate_string_key_into_list_raises_value_error(self) -> None:
+        with pytest.raises(ValueError, match="int index"):
+            PathSeeker(["a", "b"]).set_value(["x", "c"], 2)
+
+    def test_intermediate_out_of_range_index_raises_index_error(self) -> None:
+        with pytest.raises(IndexError):
+            PathSeeker(["a", "b"]).set_value([5, "c"], 2)
+
     def test_setting_a_tuple_as_the_final_value_is_fine(self) -> None:
         # the tuple is only opaque to traversal; it's still a valid value to *set*
         data: dict[str, Any] = {"point": (1, 2)}
