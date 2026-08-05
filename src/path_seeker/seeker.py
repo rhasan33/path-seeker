@@ -84,6 +84,9 @@ class PathSeeker:
     def count_key(self, key: str) -> int:
         return sum(1 for entry in self._entries() if entry.key == key)
 
+    def has_key(self, key: str) -> bool:
+        return any(entry.key == key for entry in self._entries())
+
     def set_value(self, path: list[str | int], new_value: Any) -> None:
         if not path:
             raise ValueError("path must not be empty")

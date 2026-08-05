@@ -56,6 +56,10 @@ seeker.get_keys()
 seeker.count_key("id")
 # 4
 
+# Whether a key occurs anywhere
+seeker.has_key("id")
+# True
+
 # Update one exact occurrence, using a path from find_paths
 seeker.set_value(["orders", 1, "status"], "cancelled")
 
@@ -80,6 +84,7 @@ seeker.update_last("id", -2)
 | `find_last_value(key)` | `Any` | The last value found under `key`, in traversal order. Raises `UnknownKeyProvided` if `key` doesn't occur anywhere. |
 | `get_keys()` | `list[str]` | Every distinct key name in the structure, sorted. |
 | `count_key(key)` | `int` | How many times `key` occurs. |
+| `has_key(key)` | `bool` | Whether `key` occurs anywhere in the structure. |
 | `set_value(path, new_value)` | `None` | Update the value at an exact path (from `find_paths`). |
 | `update_values(key, new_value)` | `int` | Update every occurrence of `key`; returns count updated. |
 | `update_first(key, new_value)` | `bool` | Update the first occurrence of `key`, in traversal order; `False` if absent. |
