@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-05
+
+### Added
+
+- `delete_first(key)` — delete just the first occurrence of `key`, in traversal order; returns `False` if absent.
+- `delete_last(key)` — delete just the last occurrence of `key`, in traversal order; returns `False` if absent.
+
 ## [0.3.0] - 2026-08-05
 
 ### Added
