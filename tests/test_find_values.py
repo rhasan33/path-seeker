@@ -42,6 +42,14 @@ def test_empty_list() -> None:
     assert PathSeeker([]).find_values("anything") == []
 
 
+def test_tuples_are_opaque_and_not_traversed() -> None:
+    seeker = PathSeeker({"point": (1, 2), "nested": ({"id": 1}, {"id": 2})})
+    # the tuple itself is a value that can be found under its own key...
+    assert seeker.find_values("point") == [(1, 2)]
+    # ...but dicts hidden inside a tuple are not traversed into
+    assert seeker.find_values("id") == []
+
+
 def test_value_can_be_any_type() -> None:
     data = {"a": None, "b": True, "c": 3.14, "d": [1, 2], "e": {"nested": 1}}
     seeker = PathSeeker(data)

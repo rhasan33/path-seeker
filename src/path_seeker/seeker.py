@@ -60,3 +60,48 @@ class PathSeeker:
 
     def count_key(self, key: str) -> int:
         return sum(1 for entry in self._entries() if entry.key == key)
+
+    def set_value(self, path: list[str | int], new_value: Any) -> None:
+        if not path:
+            raise ValueError("path must not be empty")
+        container: Any = self._data
+        for step in path[:-1]:
+            container = self._step_into(container, step)
+        last = path[-1]
+        if isinstance(container, dict):
+            if not isinstance(last, str):
+                raise ValueError(f"expected a string key for dict, got {type(last).__name__}")
+            if last not in container:
+                raise KeyError(last)
+        elif isinstance(container, list):
+            if not isinstance(last, int) or isinstance(last, bool):
+                raise ValueError(f"expected an int index for list, got {type(last).__name__}")
+            if not -len(container) <= last < len(container):
+                raise IndexError(last)
+        else:
+            raise ValueError(f"cannot set a value inside {type(container).__name__}")
+        container[last] = new_value
+
+    def update_values(self, key: str, new_value: Any) -> int:
+        count = 0
+        for entry in self._entries():
+            if entry.key == key:
+                entry.parent[entry.key] = new_value
+                count += 1
+        return count
+
+    @staticmethod
+    def _step_into(container: Any, step: str | int) -> Any:
+        if isinstance(container, dict):
+            if not isinstance(step, str):
+                raise ValueError(f"expected a string key for dict, got {type(step).__name__}")
+            if step not in container:
+                raise KeyError(step)
+            return container[step]
+        if isinstance(container, list):
+            if not isinstance(step, int) or isinstance(step, bool):
+                raise ValueError(f"expected an int index for list, got {type(step).__name__}")
+            if not -len(container) <= step < len(container):
+                raise IndexError(step)
+            return container[step]
+        raise ValueError(f"cannot index into {type(container).__name__}")
