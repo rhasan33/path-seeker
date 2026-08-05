@@ -54,3 +54,6 @@ class PathSeeker:
 
     def find_paths(self, key: str) -> list[Match]:
         return [Match(entry.path, entry.value) for entry in self._entries() if entry.key == key]
+
+    def get_keys(self) -> list[str]:
+        return sorted({entry.key for entry in self._entries()})
