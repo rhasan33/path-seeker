@@ -113,6 +113,23 @@ class PathSeeker:
                 count += 1
         return count
 
+    def update_first(self, key: str, new_value: Any) -> bool:
+        for entry in self._entries():
+            if entry.key == key:
+                entry.parent[entry.key] = new_value
+                return True
+        return False
+
+    def update_last(self, key: str, new_value: Any) -> bool:
+        last_entry = None
+        for entry in self._entries():
+            if entry.key == key:
+                last_entry = entry
+        if last_entry is None:
+            return False
+        last_entry.parent[last_entry.key] = new_value
+        return True
+
     @staticmethod
     def _step_into(container: Any, step: str | int) -> Any:
         if isinstance(container, dict):

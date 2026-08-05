@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `find_first_value(key)` — the first value found under `key`, in traversal order; raises `UnknownKeyProvided` if absent.
 - `find_last_value(key)` — the last value found under `key`, in traversal order; raises `UnknownKeyProvided` if absent.
+- `update_first(key, new_value)` — update just the first occurrence of `key`, in traversal order.
+- `update_last(key, new_value)` — update just the last occurrence of `key`, in traversal order.
 
 ## [0.1.0] - Unreleased
 

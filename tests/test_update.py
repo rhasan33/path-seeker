@@ -125,3 +125,57 @@ class TestUpdateValues:
         seeker = PathSeeker(data)
         assert seeker.update_values("id", 0) == 0
         assert data == {"nested": ({"id": 1}, {"id": 2})}
+
+
+class TestUpdateFirst:
+    def test_updates_the_single_occurrence(self) -> None:
+        data = {"a": 1}
+        seeker = PathSeeker(data)
+        assert seeker.update_first("a", 2) is True
+        assert data == {"a": 2}
+
+    def test_updates_only_the_first_of_several_occurrences_across_depths(self) -> None:
+        data = {"id": 1, "user": {"id": 2, "address": {"id": 3}}}
+        seeker = PathSeeker(data)
+        assert seeker.update_first("id", 0) is True
+        assert data == {"id": 0, "user": {"id": 2, "address": {"id": 3}}}
+
+    def test_updates_only_the_first_occurrence_inside_a_list_of_dicts(self) -> None:
+        data: dict[str, Any] = {"orders": [{"status": "pending"}, {"status": "pending"}]}
+        seeker = PathSeeker(data)
+        assert seeker.update_first("status", "cancelled") is True
+        assert data["orders"][0]["status"] == "cancelled"
+        assert data["orders"][1]["status"] == "pending"
+
+    def test_key_absent_returns_false_and_updates_nothing(self) -> None:
+        data = {"a": 1}
+        seeker = PathSeeker(data)
+        assert seeker.update_first("missing", 2) is False
+        assert data == {"a": 1}
+
+
+class TestUpdateLast:
+    def test_updates_the_single_occurrence(self) -> None:
+        data = {"a": 1}
+        seeker = PathSeeker(data)
+        assert seeker.update_last("a", 2) is True
+        assert data == {"a": 2}
+
+    def test_updates_only_the_last_of_several_occurrences_across_depths(self) -> None:
+        data = {"id": 1, "user": {"id": 2, "address": {"id": 3}}}
+        seeker = PathSeeker(data)
+        assert seeker.update_last("id", 0) is True
+        assert data == {"id": 1, "user": {"id": 2, "address": {"id": 0}}}
+
+    def test_updates_only_the_last_occurrence_inside_a_list_of_dicts(self) -> None:
+        data: dict[str, Any] = {"orders": [{"status": "pending"}, {"status": "pending"}]}
+        seeker = PathSeeker(data)
+        assert seeker.update_last("status", "cancelled") is True
+        assert data["orders"][0]["status"] == "pending"
+        assert data["orders"][1]["status"] == "cancelled"
+
+    def test_key_absent_returns_false_and_updates_nothing(self) -> None:
+        data = {"a": 1}
+        seeker = PathSeeker(data)
+        assert seeker.update_last("missing", 2) is False
+        assert data == {"a": 1}

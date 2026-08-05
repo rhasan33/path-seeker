@@ -62,6 +62,12 @@ seeker.set_value(["orders", 1, "status"], "cancelled")
 # Update every occurrence of a key at once
 seeker.update_values("id", 0)
 # 4  (number of occurrences updated)
+
+# Update just the first/last occurrence, in traversal order
+seeker.update_first("id", -1)
+# True
+seeker.update_last("id", -2)
+# True
 ```
 
 ## API
@@ -76,6 +82,8 @@ seeker.update_values("id", 0)
 | `count_key(key)` | `int` | How many times `key` occurs. |
 | `set_value(path, new_value)` | `None` | Update the value at an exact path (from `find_paths`). |
 | `update_values(key, new_value)` | `int` | Update every occurrence of `key`; returns count updated. |
+| `update_first(key, new_value)` | `bool` | Update the first occurrence of `key`, in traversal order; `False` if absent. |
+| `update_last(key, new_value)` | `bool` | Update the last occurrence of `key`, in traversal order; `False` if absent. |
 | `.data` | `dict \| list` | The current (possibly mutated) underlying structure. |
 
 Search is by **key name**, not by value — searching for a value and getting its path
