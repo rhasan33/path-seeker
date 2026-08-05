@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "path-seeker"
+dynamic = ["version"]
+description = "Find, count, and update keys anywhere in a nested dict or list of dicts, with full path disambiguation."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [{ name = "Rakib Hasan Amiya", email = "rhasan.amiya@gmail.com" }]
+keywords = ["dict", "nested", "path", "search", "json"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/rhasan33/path-seeker"
+Issues = "https://github.com/rhasan33/path-seeker/issues"
+Changelog = "https://github.com/rhasan33/path-seeker/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "mypy", "ruff", "pre-commit"]
+
+[tool.hatch.version]
+path = "src/path_seeker/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/path_seeker"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+strict = true
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["src/path_seeker"]
