@@ -154,6 +154,23 @@ class PathSeeker:
             del entry.parent[entry.key]
         return len(matches)
 
+    def delete_first(self, key: str) -> bool:
+        for entry in self._entries():
+            if entry.key == key:
+                del entry.parent[entry.key]
+                return True
+        return False
+
+    def delete_last(self, key: str) -> bool:
+        last_entry = None
+        for entry in self._entries():
+            if entry.key == key:
+                last_entry = entry
+        if last_entry is None:
+            return False
+        del last_entry.parent[last_entry.key]
+        return True
+
     @staticmethod
     def _step_into(container: Any, step: str | int) -> Any:
         if isinstance(container, dict):

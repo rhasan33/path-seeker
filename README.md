@@ -82,6 +82,12 @@ seeker.update_last("id", -2)
 # Delete every occurrence of a key
 seeker.delete_key("status")
 # 2  (number of occurrences deleted)
+
+# Delete just the first/last occurrence, in traversal order
+seeker.delete_first("id")
+# True
+seeker.delete_last("id")
+# True
 ```
 
 ## API
@@ -102,10 +108,17 @@ seeker.delete_key("status")
 | `update_first(key, new_value)` | `bool` | Update the first occurrence of `key`, in traversal order; `False` if absent. |
 | `update_last(key, new_value)` | `bool` | Update the last occurrence of `key`, in traversal order; `False` if absent. |
 | `delete_key(key)` | `int` | Delete every occurrence of `key`, at any depth; returns count deleted. |
+| `delete_first(key)` | `bool` | Delete the first occurrence of `key`, in traversal order; `False` if absent. |
+| `delete_last(key)` | `bool` | Delete the last occurrence of `key`, in traversal order; `False` if absent. |
 | `.data` | `dict \| list` | The current (possibly mutated) underlying structure. |
 
 Search is by **key name**, not by value — searching for a value and getting its path
 back is not supported yet.
+
+`find_first_*`/`find_last_*` raise `UnknownKeyProvided` when `key` doesn't occur
+anywhere; `update_first`/`update_last`/`delete_first`/`delete_last`/`delete_key`
+return `False`/`0` instead, since "the key wasn't there" is an expected outcome for
+a write, not an error.
 
 ## Limitations
 
@@ -118,6 +131,9 @@ back is not supported yet.
 - No cycle detection. This is fine for JSON/YAML-shaped data, which can't contain
   cycles, but a structure with a manually-introduced reference cycle will recurse
   forever.
+- `count_key`, `has_key`, and `get_keys` do a full traversal on every call — there's
+  no indexing or caching, so repeated calls on a large structure cost proportionally
+  more each time.
 
 ## Development
 
