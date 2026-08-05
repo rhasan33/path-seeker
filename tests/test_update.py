@@ -40,7 +40,7 @@ class TestSetValue:
         assert data == {"a": {"b": 2}}
 
     def test_empty_path_raises_value_error(self) -> None:
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="empty"):
             PathSeeker({"a": 1}).set_value([], 2)
 
     def test_missing_dict_key_raises_key_error(self) -> None:
@@ -52,17 +52,22 @@ class TestSetValue:
             PathSeeker({"items": [1, 2]}).set_value(["items", 5], 3)
 
     def test_int_index_into_dict_raises_value_error(self) -> None:
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="string key"):
             PathSeeker({"a": {"b": 1}}).set_value(["a", 0], 2)
 
     def test_string_key_into_list_raises_value_error(self) -> None:
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="int index"):
             PathSeeker({"items": [1, 2]}).set_value(["items", "b"], 3)
 
-    def test_stepping_into_a_tuple_raises_value_error(self) -> None:
-        # tuples are opaque (not traversed), so there is no valid path through one
-        with pytest.raises(ValueError):
+    def test_setting_the_tuple_itself_raises_value_error(self) -> None:
+        # tuples are opaque (not traversed), so they can't be the final container either
+        with pytest.raises(ValueError, match="cannot set a value inside"):
             PathSeeker({"point": (1, 2)}).set_value(["point", 0], 9)
+
+    def test_stepping_through_a_tuple_raises_value_error(self) -> None:
+        # an intermediate (non-final) step into a tuple hits _step_into instead
+        with pytest.raises(ValueError, match="cannot index into"):
+            PathSeeker({"point": (1, 2)}).set_value(["point", 0, "x"], 9)
 
     def test_setting_a_tuple_as_the_final_value_is_fine(self) -> None:
         # the tuple is only opaque to traversal; it's still a valid value to *set*
