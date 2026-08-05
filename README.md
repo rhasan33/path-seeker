@@ -78,6 +78,10 @@ seeker.update_first("id", -1)
 # True
 seeker.update_last("id", -2)
 # True
+
+# Delete every occurrence of a key
+seeker.delete_key("status")
+# 2  (number of occurrences deleted)
 ```
 
 ## API
@@ -97,6 +101,7 @@ seeker.update_last("id", -2)
 | `update_values(key, new_value)` | `int` | Update every occurrence of `key`; returns count updated. |
 | `update_first(key, new_value)` | `bool` | Update the first occurrence of `key`, in traversal order; `False` if absent. |
 | `update_last(key, new_value)` | `bool` | Update the last occurrence of `key`, in traversal order; `False` if absent. |
+| `delete_key(key)` | `int` | Delete every occurrence of `key`, at any depth; returns count deleted. |
 | `.data` | `dict \| list` | The current (possibly mutated) underlying structure. |
 
 Search is by **key name**, not by value — searching for a value and getting its path

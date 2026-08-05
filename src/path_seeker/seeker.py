@@ -148,6 +148,12 @@ class PathSeeker:
         last_entry.parent[last_entry.key] = new_value
         return True
 
+    def delete_key(self, key: str) -> int:
+        matches = [entry for entry in self._entries() if entry.key == key]
+        for entry in matches:
+            del entry.parent[entry.key]
+        return len(matches)
+
     @staticmethod
     def _step_into(container: Any, step: str | int) -> Any:
         if isinstance(container, dict):

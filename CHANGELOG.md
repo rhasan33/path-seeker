@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `has_key(key)` — whether `key` occurs anywhere in the structure.
 - `find_first_path(key)` — the first `(path, value)` match found under `key`, in traversal order; raises `UnknownKeyProvided` if absent.
 - `find_last_path(key)` — the last `(path, value)` match found under `key`, in traversal order; raises `UnknownKeyProvided` if absent.
+- `delete_key(key)` — delete every occurrence of `key`, at any depth; returns count deleted.
 
 ## [0.2.0] - 2026-08-05
 
