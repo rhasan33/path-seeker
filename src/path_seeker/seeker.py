@@ -61,6 +61,21 @@ class PathSeeker:
     def find_paths(self, key: str) -> list[Match]:
         return [Match(entry.path, entry.value) for entry in self._entries() if entry.key == key]
 
+    def find_first_path(self, key: str) -> Match:
+        for entry in self._entries():
+            if entry.key == key:
+                return Match(entry.path, entry.value)
+        raise UnknownKeyProvided(key)
+
+    def find_last_path(self, key: str) -> Match:
+        last_match: Match | None = None
+        for entry in self._entries():
+            if entry.key == key:
+                last_match = Match(entry.path, entry.value)
+        if last_match is None:
+            raise UnknownKeyProvided(key)
+        return last_match
+
     def find_first_value(self, key: str) -> Any:
         for entry in self._entries():
             if entry.key == key:

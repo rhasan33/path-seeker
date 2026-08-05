@@ -48,6 +48,12 @@ seeker.find_first_value("id")
 seeker.find_last_value("id")
 # 101
 
+# The first/last (path, value) match found under a key, in traversal order
+seeker.find_first_path("id")
+# Match(path=['user', 'id'], value=1)
+seeker.find_last_path("id")
+# Match(path=['orders', 1, 'id'], value=101)
+
 # Every distinct key name in the structure
 seeker.get_keys()
 # ['address', 'city', 'id', 'orders', 'status', 'user']
@@ -82,6 +88,8 @@ seeker.update_last("id", -2)
 | `find_paths(key)` | `list[Match]` | Every `(path, value)` pair for `key`, at any depth. |
 | `find_first_value(key)` | `Any` | The first value found under `key`, in traversal order. Raises `UnknownKeyProvided` if `key` doesn't occur anywhere. |
 | `find_last_value(key)` | `Any` | The last value found under `key`, in traversal order. Raises `UnknownKeyProvided` if `key` doesn't occur anywhere. |
+| `find_first_path(key)` | `Match` | The first `(path, value)` match found under `key`, in traversal order. Raises `UnknownKeyProvided` if `key` doesn't occur anywhere. |
+| `find_last_path(key)` | `Match` | The last `(path, value)` match found under `key`, in traversal order. Raises `UnknownKeyProvided` if `key` doesn't occur anywhere. |
 | `get_keys()` | `list[str]` | Every distinct key name in the structure, sorted. |
 | `count_key(key)` | `int` | How many times `key` occurs. |
 | `has_key(key)` | `bool` | Whether `key` occurs anywhere in the structure. |
