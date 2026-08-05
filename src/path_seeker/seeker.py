@@ -57,3 +57,6 @@ class PathSeeker:
 
     def get_keys(self) -> list[str]:
         return sorted({entry.key for entry in self._entries()})
+
+    def count_key(self, key: str) -> int:
+        return sum(1 for entry in self._entries() if entry.key == key)
